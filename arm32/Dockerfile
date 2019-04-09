@@ -1,10 +1,14 @@
 FROM arm32v7/node:8
 
+ARG DashKiosk_Version=v2.7.3
+
 RUN npm install -g bower grunt-cli
-RUN apt-get -qq update && apt-get install -qq gifsicle libjpeg-progs optipng
+RUN apt-get -qq update && apt-get install -qq gifsicle libjpeg-progs optipng git
+
+RUN git clone -b $DashKiosk_Version --depth 1 https://github.com/vincentbernat/dashkiosk.git /dashkiosk
 
 WORKDIR /dashkiosk
-COPY . /dashkiosk/
+
 ENV NPM_CONFIG_LOGLEVEL warn
 
 RUN npm install

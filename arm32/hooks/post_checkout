@@ -1,0 +1,8 @@
+#!/bin/bash
+# hooks/post_checkout
+# https://docs.docker.com/docker-cloud/builds/advanced/
+
+echo "[***] install qemu-user for arm32 build support";
+apt-get update;
+apt-get upgrade -y;
+apt-get install -y qemu-user;

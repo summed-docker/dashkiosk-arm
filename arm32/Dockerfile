@@ -11,9 +11,9 @@ WORKDIR /dashkiosk
 
 ENV NPM_CONFIG_LOGLEVEL warn
 
-#RUN npm update
-#RUN npm audit fix
+RUN npm update
 RUN npm install
+RUN npm audit fix
 RUN grunt
 RUN cd dist && npm install --production
 RUN rm -rf ../node_modules ../build
@@ -27,5 +27,10 @@ ENV NODE_ENV production
 ENV port 8080
 ENV db__options__storage /database/dashkiosk.sqlite
 
-ENTRYPOINT [ "node", "/dashkiosk/dist/server.js" ]
 EXPOSE 8080
+
+#CMD [ "node", "/dashkiosk/dist/server.js" ]
+
+CMD service dbus start \
+    && avahi-daemon --no-drop-root --daemonize \
+    && exec node /dashkiosk/dist/server.js "$@"
